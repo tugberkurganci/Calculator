@@ -1,54 +1,90 @@
 import java.util.Scanner;
 
-public class Calculator {
+public class Calculator implements Isum, Iremoval, Imulti, Imode, Idivision {
+
+    private int number1;
+    private int number2;
+    private int choice;
 
     public void calculus() {
 
-        Scanner scanner = new Scanner(System.in);
+            //ı use static effact
+            setChoice(Choice.createChoice());
+            if (choice > 0 && choice < 6) {
 
-        System.out.println("What action would you like to do?");
-        System.out.println("1-Gathering");
-        System.out.println("2-Removal");
-        System.out.println("3-Multiplication");
-        System.out.println("4-Division");
-        System.out.println("5-Mode Taking");
-        System.out.print("Choice :");
+            setNumber1(numberTaker1());
+            setNumber2(numberTaker2());
 
-        int choice = scanner.nextInt();
-
-        if (choice > 0 && choice < 6) {
-
-            System.out.print("Enter the first number :");
-            int firstNumber=scanner.nextInt();
-            System.out.print("Enter the second number :");
-            int secondNumber=scanner.nextInt();
-
-            if (choice==1) System.out.print("Result: "+sum(firstNumber,secondNumber));
-            if (choice==2) System.out.print("Result: "+removal(firstNumber,secondNumber));
-            if (choice==3) System.out.print("Result: "+multiplication(firstNumber,secondNumber));
-            if (choice==4) System.out.print("Result: "+division(firstNumber,secondNumber));
-            if (choice==5) System.out.print("Result: "+mode(firstNumber,secondNumber));
+            if (this.choice == 1) System.out.print("Result: " + sum(this.number1, this.number2));
+            if (this.choice == 2) System.out.print("Result: " + removal(this.number1, this.number2));
+            if (this.choice == 3) System.out.print("Result: " + multiplication(this.number1, this.number2));
+            if (this.choice == 4) System.out.print("Result: " + division(this.number1, this.number2));
+            if (this.choice == 5) System.out.print("Result: " + mode(this.number1, this.number2));
 
         }
     }
 
-    public int sum(int firstNumber,int secondNumber){
-       return firstNumber+secondNumber;
+    public int numberTaker1() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the first number :");
+        int firstNumber = scanner.nextInt();
+        return firstNumber;
     }
-    public int removal(int firstNumber,int secondNumber){
-        return firstNumber-secondNumber;
+
+    public int numberTaker2() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the first number :");
+        int secondNumber = scanner.nextInt();
+        return secondNumber;
     }
-    public int multiplication(int firstNumber,int secondNumber){
-        return firstNumber*secondNumber;
+
+    public int getNumber1() {
+        return number1;
     }
-    public int division(int firstNumber, int secondNumber){
-        int result=0;
-        if (secondNumber==0) {
-            System.out.println("You can't enter zero");
-        }else result=firstNumber/secondNumber;
-        return result;
+
+    public void setNumber1(int number1) {
+        this.number1 = number1;
     }
-    public int mode(int firstNumber,int secondNumber){
-        return firstNumber%secondNumber;
+
+    public int getNumber2() {
+        return number2;
+    }
+
+    public void setNumber2(int number2) {
+        this.number2 = number2;
+    }
+
+    public int getChoice() {
+        return choice;
+    }
+
+    public void setChoice(int choice) {
+        this.choice = choice;
+    }
+
+
+    @Override
+    public int removal(int firstNumber, int secondNumber) {
+        return Iremoval.super.removal(firstNumber, secondNumber);
+    }
+
+    @Override
+    public int sum(int firstNumber, int secondNumber) {
+        return Isum.super.sum(firstNumber, secondNumber);
+    }
+
+    @Override
+    public int division(int firstNumber, int secondNumber) {
+        return Idivision.super.division(firstNumber, secondNumber);
+    }
+
+    @Override
+    public int mode(int firstNumber, int secondNumber) {
+        return Imode.super.mode(firstNumber, secondNumber);
+    }
+
+    @Override
+    public int multiplication(int firstNumber, int secondNumber) {
+        return Imulti.super.multiplication(firstNumber, secondNumber);
     }
 }
