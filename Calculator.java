@@ -1,90 +1,56 @@
 import java.util.Scanner;
 
-public class Calculator implements Isum, Iremoval, Imulti, Imode, Idivision {
+public class Calculator {
+    private  int functionCount;
 
-    private int number1;
-    private int number2;
-    private int choice;
+    private int currentCount=0;
+    private IMathFunction [] functions;
 
-    public void calculus() {
-
-            //ı use static effact
-            setChoice(Choice.createChoice());
-            if (choice > 0 && choice < 6) {
-
-            setNumber1(numberTaker1());
-            setNumber2(numberTaker2());
-
-            if (this.choice == 1) System.out.print("Result: " + sum(this.number1, this.number2));
-            if (this.choice == 2) System.out.print("Result: " + removal(this.number1, this.number2));
-            if (this.choice == 3) System.out.print("Result: " + multiplication(this.number1, this.number2));
-            if (this.choice == 4) System.out.print("Result: " + division(this.number1, this.number2));
-            if (this.choice == 5) System.out.print("Result: " + mode(this.number1, this.number2));
-
+    public Calculator(int functionCount) {
+        this.functionCount = functionCount;
+        functions = new IMathFunction[functionCount];
+    }
+    public void addFunction(IMathFunction function) {
+        functions[currentCount] = function;
+        currentCount++;
+    }
+    public double doCalculation(String functionName, double arg1,double arg2) {
+        double result = 0.0;
+        boolean isFunctionFound = false;
+        for (IMathFunction function : functions) {
+            if (functionName.equalsIgnoreCase(function.getName())) {
+                result = function.calculate(arg1,arg2);
+                isFunctionFound = true;
+            }
         }
+        if(!isFunctionFound)
+            System.out.println("No such function found!");
+
+        return result;
     }
 
-    public int numberTaker1() {
+    public void listMathFunction() {
+        System.out.println("Available Functions:");
+        for (IMathFunction function : functions)
+            System.out.println(function.getName());
+    }
+    public static void startCalculator(Calculator calculator) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the first number :");
-        int firstNumber = scanner.nextInt();
-        return firstNumber;
-    }
+        calculator.listMathFunction();
+        System.out.println("end");
+        System.out.print("Please enter the name of the function:");
+        String functionName = scanner.next();
+        if(functionName.equalsIgnoreCase("end"))
+            System.exit(0);
+        System.out.print("Please enter the first argument of the function:");
+        double functionArg1 = scanner.nextDouble();
+        System.out.print("Please enter second the argument of the function:");
+        double functionArg2 = scanner.nextDouble();
+        double result = calculator.doCalculation(functionName, functionArg1,functionArg2);
+        System.out.println(functionName + " of " + functionArg1+"and"+functionArg2 + " is =" + result );
 
-    public int numberTaker2() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the first number :");
-        int secondNumber = scanner.nextInt();
-        return secondNumber;
-    }
-
-    public int getNumber1() {
-        return number1;
-    }
-
-    public void setNumber1(int number1) {
-        this.number1 = number1;
-    }
-
-    public int getNumber2() {
-        return number2;
-    }
-
-    public void setNumber2(int number2) {
-        this.number2 = number2;
-    }
-
-    public int getChoice() {
-        return choice;
-    }
-
-    public void setChoice(int choice) {
-        this.choice = choice;
-    }
-
-
-    @Override
-    public int removal(int firstNumber, int secondNumber) {
-        return Iremoval.super.removal(firstNumber, secondNumber);
-    }
-
-    @Override
-    public int sum(int firstNumber, int secondNumber) {
-        return Isum.super.sum(firstNumber, secondNumber);
-    }
-
-    @Override
-    public int division(int firstNumber, int secondNumber) {
-        return Idivision.super.division(firstNumber, secondNumber);
-    }
-
-    @Override
-    public int mode(int firstNumber, int secondNumber) {
-        return Imode.super.mode(firstNumber, secondNumber);
-    }
-
-    @Override
-    public int multiplication(int firstNumber, int secondNumber) {
-        return Imulti.super.multiplication(firstNumber, secondNumber);
+        startCalculator(calculator);
     }
 }
+
+
